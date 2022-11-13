@@ -1,6 +1,6 @@
 {
   "name": "solid-lang",
-  "version": "1.4.6",
+  "version": "1.9.9",
   "description": "i18n for Solid applications",
   "main": "build/main/index.js",
   "typings": "build/main/index.d.ts",
