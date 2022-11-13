@@ -16,8 +16,8 @@ export const createI18nContext = <T>(dictinary_: T, language_: keyof T) => {
     return translation.replace(/{{(.*?)}}/g, (_, param) => params[param])
   }
 
-  function translate(path: Path<T[keyof T]>, params?: Params) {
-    const value = lookup(translations(), path as string[], "")
+  function translate(path: string, params?: Params) {
+    const value = lookup(translations(), path.trim().split("."), "")
     switch (typeof value) {
       case "function": return value(params)
       case "string": return params ? substitute(value, params) : value
