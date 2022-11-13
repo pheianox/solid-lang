@@ -1,24 +1,14 @@
-/**
- * If you import a dependency which does not include its own type definitions,
- * TypeScript will try to find a definition for it by following the `typeRoots`
- * compiler option in tsconfig.json. For this project, we've configured it to
- * fall back to this folder if nothing is found in node_modules/@types.
- *
- * Often, you can install the DefinitelyTyped
- * (https://github.com/DefinitelyTyped/DefinitelyTyped) type definition for the
- * dependency in question. However, if no one has yet contributed definitions
- * for the package, you may want to declare your own. (If you're using the
- * `noImplicitAny` compiler options, you'll be required to declare it.)
- *
- * This is an example type definition which allows import from `module-name`,
- * e.g.:
- * ```ts
- * import something from 'module-name';
- * something();
- * ```
- */
-declare module 'module-name' {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const whatever: any;
-  export = whatever;
-}
+type Params = Record<string, any>
+
+type Prev = [never, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+  11, 12, 13, 14, 15, 16, 17, 18, 19, 20, ...0[]]
+
+type Path<T, D extends number = 10> = [D] extends [never] ? never : T extends object ?
+  { [K in keyof T]-?: [K] | (Path<T[K], Prev[D]> extends infer P ?
+    P extends [] ? never : Cons<K, P> : never
+  ) }[keyof T]
+  : [];
+
+type Cons<H, T> = T extends readonly any[] ?
+  ((h: H, ...t: T) => void) extends ((...r: infer R) => void) ? R : never
+  : never;
