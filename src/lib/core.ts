@@ -6,7 +6,7 @@ const PATH_DELIMINATOR = "."
 export const createI18nContext = <T>(dictinary_: T, language_: keyof T) => {
   const [language, setLanguage] = createSignal(language_)
   const [dictinary, setDictinary] = createSignal(dictinary_)
-  const translations = createMemo(() => dictinary()[language()])
+  const translation = createMemo(() => dictinary()[language()])
   const languages = () => Object.keys(dictinary() as object) as (keyof T)[]
 
   function lookup(object: T[keyof T], path: string[], defaultValue: any) {
@@ -20,7 +20,7 @@ export const createI18nContext = <T>(dictinary_: T, language_: keyof T) => {
 
   function translate(path: string, params?: Params) {
     const keyList = path.trim().split(PATH_DELIMINATOR)
-    const value = lookup(translations(), keyList, "")
+    const value = lookup(translation(), keyList, "")
     switch (typeof value) {
       case "function": return value(params)
       case "string": return params ? substitute(value, params) : value
@@ -28,5 +28,5 @@ export const createI18nContext = <T>(dictinary_: T, language_: keyof T) => {
     }
   }
 
-  return { translate, languages, language, setLanguage, dictinary, setDictinary }
+  return { translate, languages, language, setLanguage, dictinary, translation, setDictinary }
 }
